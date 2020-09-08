@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Ron Sielinski" />
+
+<meta name="date" content="2020-09-01" />
+
+<title>Vacuum Vignette</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Vacuum Vignette</h1>
+<h4 class="author">Ron Sielinski</h4>
+<h4 class="date">2020-09-01</h4>
+
+
+
+<div id="a-tidy-implementation-of-john-tukeys-vacuum-cleaner" class="section level2">
+<h2>A tidy implementation of John Tukey’s vacuum cleaner</h2>
+<p>One of John Tukey’s landmark papers, “The Future of Data Analysis” [1], contains a set of analytical procedures that focus on the analysis of two-way (contingency) tables. <strong>Vacuum</strong> contains an implementation of the three procedures:</p>
+<ul>
+<li><p>FUNOP (<strong>FU</strong>ll <strong>NO</strong>rmal <strong>P</strong>lot): Identifies outliers within a vector by calculating the slope (<em>z</em>) of every element, relative to the vector’s median.</p></li>
+<li><p>FUNOR-FUNOM (<strong>FU</strong>ll <strong>NO</strong>rmal <strong>R</strong>ejection-<strong>FU</strong>ll <strong>NO</strong>rmal <strong>M</strong>odification): Treats a two-way (contingency) table for outliers by isolating residuals from the table’s likely systemic effects, which are calculated from the table’s grand, row, and column means.</p></li>
+<li><p>Vacuum cleaner: Removes systemic effects from values in a two-way table, returning a set of residuals that can be used for further examination (e.g., analysis of variance).</p></li>
+</ul>
+<div id="funop" class="section level3">
+<h3>FUNOP</h3>
+<p>The base prodecure is FUNOP, which identifies outliers in a vector. Here’s Tukey’s definition:</p>
+<blockquote>
+<p>(b1) Let <em>a<sub>i|n</sub></em> be a typical value for the <em>i</em>th ordered observation in a sample of <em>n</em> from a unit normal distribution.</p>
+</blockquote>
+<blockquote>
+<p>(b2) Let <em>y</em><sub>1</sub> ≤ <em>y</em><sub>2</sub> ≤ … ≤ <em>y</em><sub>n</sub> be the ordered values to be examined. Let <em>y̍</em> be their median (or let <em>y̆</em>, read “y trimmed”, be the mean of the <em>y<sub>i</sub></em> with <em>n</em> &lt; <em>i</em> ≤ (2<em>n</em>).</p>
+</blockquote>
+<blockquote>
+<p>(b3) For <em>i</em> ≤ ⅓<em>n</em> or &gt; ⅓(2<em>n</em>) only, let <em>z<sub>i</sub></em> = (<em>y<sub>i</sub></em> – <em>y̍</em>)/<em>a<sub>i|n</sub></em> (or let <em>z<sub>i</sub></em> = (<em>y<sub>i</sub></em> – <em>y̆</em>) /<em>a<sub>i|n</sub></em>).</p>
+</blockquote>
+<blockquote>
+<p>(b4) Let <em>z̍</em> be the median of the <em>z</em>’s thus obtained (about (2<em>n</em>) in number).</p>
+</blockquote>
+<blockquote>
+<p>(b5) Give special attention to <em>z</em>’s for which both |<em>y<sub>i</sub></em> – <em>y̍</em>| ≥ A · <em>z̍</em> and <em>z<sub>i</sub></em> ≥ B · <em>z̍</em> where A and B are prechosen.</p>
+</blockquote>
+<blockquote>
+<p>(b5<em>) Particularly for small </em>n<em>, </em>z<sub>j</sub><em>’s with </em>j* more extreme than an <em>i</em> for which (b5) selects <em>z<sub>i</sub></em> also deserve special attention… (p 23).</p>
+</blockquote>
+<p>The basic idea is very similar to a Q-Q plot.</p>
+<p>Tukey gives us a sample of 14 data points. On a normal Q-Q plot, if data are normally distributed, they form a straight line. But in the chart below, based upon data from Tukey’s example, we can clearly see that a couple of the points are relatively distant from the straight line. They’re outliers.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The goal of FUNOP, though, is to eliminate the need for visual inspection by automating interpretation.</p>
+<p>The first variable in the FUNOP procedure (<em>a<sub>i|n</sub></em>) simply gives us the theoretical distribution, where <em>i</em> is the ordinal position in the range 1..<em>n</em> and Gau<sup>-1</sup> is the quantile function of the normal distribution (i.e., the “Q” in Q-Q plot):</p>
+<p><span class="math display">\[
+a_{i|n}=\ {\rm Gau}^{-1}\left[\frac{\left(3i-1\right)}{\left(3n+1\right)}\right]
+\]</span></p>
+<p>The key innovation of FUNOP is to calculate the slope of each point, relative to the median.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>If <em>y̍</em> is the median of the sample, and we presume that it’s located at the midpoint of the distribution (where <em>a</em>(<em>y</em>) = 0), then the slope of each point can be calculated as:</p>
+<p><span class="math display">\[
+z_i=\frac{y_i - \acute{y}}{a_{i|n}}
+\]</span></p>
+<p>The chart above illustrates how slope of one point (1.2, 454) is calculated, relative to the median (0, 33.5).</p>
+<p><span class="math display">\[
+z\ =\ \frac{\Delta y}{\Delta a}\ =\ \frac{\left(454.0-\ 33.5\right)}{\left(1.2-0\right)}=350.4
+\]</span></p>
+<p>Any point that has a slope significantly steeper than the rest of the population is necessarily farther from the straight line. To do this, FUNOP simply compares each slope (<em>z<sub>i</sub></em>) to the median of all <em>calculated</em> slopes (<em>z̍</em>).</p>
+<p>Note, however, that FUNOP calculates slopes for the top and bottom thirds of the sorted population only, in part because <em>z<sub>i</sub></em> won’t vary much over the inner third, but also because the value of <em>a<sub>i|n</sub></em> for the inner third will be close to 0 and dividing by ≈0 when calculating <em>z<sub>i</sub></em> might lead to instability.</p>
+<p>Significance—what Tukey calls “special attention”—is partially determined by <em>B</em>, one of two predetermined values (or hyperparameters). For his example, Tukey recommends a value between 1.5 and 2.0, which means that FUNOP simply checks whether the slope of any point, relative to the midpoint, is 1.5 or 2.0 times larger than the median.</p>
+<p>The other predetermined value is <em>A</em>, which is roughly equivalent to the number of standard deviations of <em>y<sub>i</sub></em> from <em>y̍</em> and serves as a second criterion for significance.</p>
+<p>The following chart shows how FUNOP works.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Our original values are plotted along the <em>x</em>-axis. The points in the green make up the inner third of our sample, and we use them to calculate <em>y̍</em>, the median of just those points, indicated by the green vertical line.</p>
+<p>The points not in green make up the outer thirds (i.e., the top and bottom thirds) of our sample, and we use them to calculate <em>z̍</em>, the median slope of just those points, indicated by the black horizontal line.</p>
+<p>Our first selection criterion is <em>z<sub>i</sub></em> ≥ <em>B</em> · <em>z̍</em>. In his example, Tukey sets <em>B</em> = 1.5, so our threshold of interest is 1.5<em>z̍</em>, indicated by the blue horizontal line. We’ll consider any point above that line (the shaded blue region) to “deserve special attention”. We have only one such point, colored red.</p>
+<p>Our second criterion is |<em>y<sub>i</sub></em> – <em>y̍</em>| ≥ <em>A</em> · <em>z̍</em>. In his example, Tukey sets <em>A</em> = 0, so our threshold of interest is |<em>y<sub>i</sub></em> – <em>y̍</em>| ≥ 0 or (more simply) <em>y<sub>i</sub></em> ≠ <em>y̍</em>. Basically, any point not on the green line. Our one point in the shaded blue region isn’t on the green line, so we still have our one point.</p>
+<p>Our final criterion is any <em>z<sub>j</sub></em>’s with <em>j</em> more extreme than any <em>i</em> selected so far. Basically, that’s any value more extreme than the ones already identified. In this case, we have one value that’s larger (further to the right on the <em>x</em>-axis) than our red dot. That point is also colored red, and we flag it as deserving special attention.</p>
+<p>The two points identified by FUNOP are the same ones that we identified visually in Chart 1.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># Table 1 contains example data from Tukey&#39;s paper</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>table_<span class="dv">1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">#&gt;  [1]   14 -104  -97  -59 -161   93  454 -341   54  137  473   45  193   22</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>result &lt;-<span class="st"> </span><span class="kw">funop</span>(table_<span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>result</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co">#&gt;       y  i middle           a        z special</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt; 1    14  6   TRUE -0.26540475       NA      NA</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt; 2  -104  3  FALSE -0.89255967 154.0513   FALSE</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt; 3   -97  4  FALSE -0.65630499 198.8405   FALSE</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt; 4   -59  5   TRUE -0.45214741       NA      NA</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt; 5  -161  2  FALSE -1.19379507 162.9258   FALSE</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt; 6    93 10   TRUE  0.45214741       NA      NA</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co">#&gt; 7   454 13  FALSE  1.19379507 352.2380    TRUE</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="co">#&gt; 8  -341  1  FALSE -1.67966119 222.9616   FALSE</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co">#&gt; 9    54  9   TRUE  0.26540475       NA      NA</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="co">#&gt; 10  137 11  FALSE  0.65630499 157.7011   FALSE</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="co">#&gt; 11  473 14  FALSE  1.67966119 261.6599    TRUE</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="co">#&gt; 12   45  8   TRUE  0.08755225       NA      NA</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co">#&gt; 13  193 12  FALSE  0.89255967 178.6995   FALSE</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="co">#&gt; 14   22  7   TRUE -0.08755225       NA      NA</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a><span class="co"># value of the outliers</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a>result[<span class="kw">which</span>(result<span class="op">$</span>special <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>), <span class="st">&#39;y&#39;</span>]</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="co">#&gt; [1] 454 473</span></span></code></pre></div>
+</div>
+<div id="funor-funom" class="section level3">
+<h3>FUNOR-FUNOM</h3>
+<p>A common reason for identifing outliers is to do something about them, often by trimming or Winsorizing the dataset. The former simply removes an equal number of values from upper and lower ends of a sorted dataset. Winsorizing is similar but doesn’t remove values. Instead, it replaces them with the closest original value not affected by the process.</p>
+<p>Tukey’s FUNOR-FUNOM offers an alternate approach. The procedure’s name reflects its purpose: FUNOR-FUNOM uses FUNOP to identify outliers, and then uses separate <em>rejection</em> and <em>modification</em> procedures to treat them.</p>
+<p>The technique offers a number of innovations. First, unlike trimming and Winsorizing, which affect all the values at the top and bottom ends of a sorted dataset, FUNOR-FUNOM uses FUNOP to <em>identify</em> individual outliers to treat. Second, FUNOR-FUNOM leverages statistical properties of the dataset to determine <em>individual</em> modifications for those outliers.</p>
+<p>FUNOR-FUNOM is specifically designed to operate on two-way (or contingency) tables. Similar to other techniques that operate on contingency tables, it uses the table’s grand mean (<em>x<sub>..</sub></em>) and the row and column means (<em>x<sub>j.</sub></em> and <em>x<sub>.k</sub></em>, respectively) to calculate expected values for entries in the table.</p>
+<p>The equation below shows how these effects are combined. Because it’s unlikely for expected values to match the table’s actual values exactly, the equation includes a residual term (<em>y<sub>jk</sub></em>) to account for any deviation.</p>
+<p>$$</p>
+<p><span class="math display">\[\begin{align}
+
+(actual \space value) &amp;= (general \space \mathit{effect}) + (row \space \mathit{effect}) + (column \space \mathit{effect}) + (deviation)\\
+x_{jk} &amp;= (x_{..}) + (x_{j.} - x_{..}) + (x_{.k} - x_{..}) + (y_{jk})\\
+&amp;= x_{..} + x_{j.} - x_{..} + x_{.k} - x_{..} + y_{jk}\\
+&amp;= x_{j.} + x_{.k} - x_{..} + y_{jk}
+
+\end{align}\]</span></p>
+<p>$$</p>
+<p>FUNOR-FUNOM is primarily interested in the values that deviate most from their expected values, the ones with the largest residuals. So, to calculate residuals, simply swap the above equation around:</p>
+<p><span class="math display">\[
+y_{jk}=x_{jk}-x_{j.}-\ x_{.k}+\ x_{..}\ 
+\]</span></p>
+<p>FUNOR-FUNOM starts by repeatedly applying FUNOP, looking for outlier residuals. When it finds them, it modifies the outlier with the greatest deviation by applying the following modification:</p>
+<p><span class="math display">\[
+x_{jk}\rightarrow x_{jk}-{\Delta x}_{jk}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\Delta x_{jk}=\ z_{jk} \cdot a_{a(n)}\cdot\frac{r\cdot c}{\left(r-1\right)\left(c-1\right)}
+\]</span></p>
+<p>Recalling the definition of slope (from FUNOP)</p>
+<p><span class="math display">\[
+z_i=\frac{y_i - \acute{y}}{a_{i|n}}
+\]</span> the first portion of the Δ<em>x<sub>jk</sub></em> equation reduces to just <em>y<sub>jk</sub></em> – <em>y̍</em>, the difference of the residual from the median. The second portion of the equation is a factor, based solely upon table size, meant to compensate for the effect of an outlier on the table’s grand, row, and column means.</p>
+<p>When Δ<em>x<sub>jk</sub></em> is applied to the original value, the <em>y<sub>jk</sub></em> terms cancel out, effectively setting the outlier to its expected value (based upon the combined effects of the contingency table) plus a factor of the median residual (~ <em>x<sub>j.</sub></em> + <em>x<sub>.k</sub></em> + <em>x<sub>..</sub></em> + <em>y̍</em>).</p>
+<p>FUNOR-FUNOM repeats this same process until it no longer finds values that “deserve special attention.”</p>
+<p>In the final phase, the FUNOM phase, the procedure uses a lower threshold of interest—FUNOP with a lower <em>A</em>—to identify a final set of outliers for treatment. The adjustment becomes</p>
+<p><span class="math display">\[
+\Delta x_{jk} = (z_{jk} - B_M \cdot z̍)a_{i|n}
+\]</span></p>
+<p>There are a couple of changes here. First, the inclusion of (–<em>B<sub>M</sub></em> · <em>z̍</em>) effectively sets the residual of outliers to FUNOP’s threshold of interest, much like the way that Winsorizing sets affected values to the same cut-off threshold. FUNOM, though, sets <em>only the residual</em> of affected values to that threshold: The greater part of the value is determined by the combined effects of the grand, row, and column means.</p>
+<p>Second, because we’ve already taken care of the largest outliers (whose adjustment would have a more significant effect on the table’s means), we no longer need the compensating factor.</p>
+<p>The chart below shows the result of applying FUNOR-FUNOM to the data in Table 2 of Tukey’s paper.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The grey dots represent the cleansed dataset. The black dots represent the values of affected points <em>prior</em> to treatment, and the dashed lines connect those points to their treated values, illustrating the extent to which those points changed.</p>
+<p>FUNOR handles the largest adjustments, which Tukey accomplishes by setting <em>A<sub>R</sub></em> = 10 and <em>B<sub>R</sub></em> = 1.5 for that portion of the process, and FUNOP handles the finer adjustments by setting <em>A<sub>M</sub></em> = 0 and <em>B<sub>M</sub></em> = 1.5.</p>
+<p>Again, because the procedure leverages the statistical properties of the data, each of the resulting adjustments is unique.</p>
+<p>Here’s an example on a smaller dataset.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># create a random dataset, representing a two-way table </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">16</span>), <span class="dt">nrow =</span> <span class="dv">4</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"># add some noise</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>dat[<span class="dv">2</span>, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">10</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co"># cleanse the table of outliers</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>cleansed_dat &lt;-<span class="st"> </span><span class="kw">funor_funom</span>(dat)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co"># look at the two tables, before and after</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>dat</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt;           [,1]        [,2]       [,3]       [,4]</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.3709584  0.40426832  2.0184237 -1.3888607</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt; [2,] 9.7157471 -0.10612452 -0.0627141 -0.2787888</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.3631284  1.51152200  1.3048697 -0.1333213</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt; [4,] 0.6328626 -0.09465904  2.2866454  0.6359504</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>cleansed_dat </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt;           [,1]        [,2]       [,3]       [,4]</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.3709584  0.40426832  2.0184237 -1.3888607</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="co">#&gt; [2,] 9.2354713 -0.10612452 -0.0627141 -0.2787888</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.3631284  1.51152200  1.3048697 -0.1333213</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="co">#&gt; [4,] 0.6328626 -0.09465904  2.2866454  0.6359504</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="co"># look at the difference between the two tables</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="co"># only one non-zero difference</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>dat <span class="op">-</span><span class="st"> </span>cleansed_dat</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a><span class="co">#&gt;           [,1] [,2] [,3] [,4]</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.0000000    0    0    0</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.4802758    0    0    0</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.0000000    0    0    0</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a><span class="co">#&gt; [4,] 0.0000000    0    0    0</span></span></code></pre></div>
+</div>
+<div id="vacuum-cleaner" class="section level3">
+<h3>Vacuum cleaner</h3>
+<p>FUNOR-FUNOM treats the outliers of a contingency table by identifying and minimizing outsized residuals, based upon the grand, row, and column means.</p>
+<p>Tukey takes these concepts further with his vacuum cleaner, whose output is a set of residuals, which can be used to better understand sources of variance in the data and enable more informed analysis.</p>
+<p>To isolate residuals, Tukey’s vacuum cleaner uses regression to break down the values from the contingency table into their constituent components (p 51):</p>
+<p><span class="math display">\[
+\mathit{
+(original \space values) = (dual \space regression) \\
++ (deviations \space \mathit{of} \space row \space regression \space \mathit{from} \space dual \space regression) \\
++ (deviations \space \mathit{of} \space column \space regression \space \mathit{from} \space dual \space regression) \\
++ (residuals) \\
+}
+\]</span></p>
+<p>The idea is very similar to the one based upon the grand, row, and column means. In fact, the first stage of the vacuum cleaner produces the same result as subtracting the combined effect of the means from the original values.</p>
+<p>To do this, the vacuum cleaner needs to calculate regression coefficients for each row and column based upon the values in our table (<em>y<sub>rc</sub></em>) and a carrier—or regressor—for both rows (<em>a<sub>r</sub></em>) and columns (<em>b<sub>c</sub></em>).</p>
+<p>Below is the equation used to calculate regression coefficients for columns.</p>
+<p><span class="math display">\[
+[y/a]_c= \frac{\sum_r{a_ry_{rc}}}{\sum_r a_r^2}
+\]</span></p>
+<p>Conveniently, the equation will give us the mean of a column when we set ar ≡ 1:</p>
+<p><span class="math display">\[
+[y/a]_c= \frac{\sum_r{1 \cdot y_{rc}}}{\sum_r 1} = \frac{\sum_r{y_{rc}}}{n_r}
+\]</span></p>
+<p>where <em>n<sub>r</sub></em> is the number of rows. Effectively, the equation iterates through every row (Σ<em><sub>r</sub></em>), summing up the individual values in the same column (<em>c</em>) and dividing by the number of rows, the same as calculating the mean (<em>y<sub>.c</sub></em>).</p>
+<p>Note, however, that <em>a<sub>r</sub></em> is a vector. So to set <em>a<sub>r</sub></em> ≡ 1, we need our vector to satisfy this equation:</p>
+<p><span class="math display">\[
+\sum_r a_r^2=1
+\]</span></p>
+<p>For a vector of length <em>n<sub>r</sub></em> we can simply assign every member the same value:</p>
+<p><span class="math display">\[
+\sqrt{\frac{1}{n_r}}
+\]</span> Our initial regressors end up being two sets of vectors, one for rows and one for columns, containing either √(1/<em>n<sub>c</sub></em>) for rows or √(1/<em>n<sub>r</sub></em>) for columns.</p>
+<p>Finally, in the same way that the mean of all row means or the mean of all column means can be used to calculate the grand mean, either the row coefficients or column coefficients can be used to calculate a dual-regression (or “grand”) coefficient:</p>
+<p><span class="math display">\[
+\frac{\sum_{c}{\left[y/a\right]_cb_c}}{\sum_{c} b_c^2}\ \equiv\ \frac{\sum\sum{a_ry_{rc}b_c}}{\sum\sum{a_r^2b_c^2}}\equiv\frac{\sum_{r}{a_r\left[y/b\right]_r}}{\sum_{r} a_r^2}\ =\ \left[y/ab\right]\
+\]</span></p>
+<p>The reason for calculating all of these coefficients, rather than simply subtracting the grand, row, and column means from our table’s original values, is that Tukey’s vacuum cleaner reuses the coefficients from this stage as regressors in the next. (To ensure <em>a<sub>r</sub></em> ≡ 1 and <em>a<sub>c</sub></em> ≡ 1 for the next stage, we normalize both sets of new regressors.)</p>
+<p>The second phase is the real innovation. Tukey takes one of his earlier ideas, one degree of freedom for non-additivity, and applies it separately to each row and column. This, Tukey tells us, “…extracts row-by-row regression upon ‘column mean minus grand mean’ and column-by-column regression on ‘row mean minus grand mean’” (p 53).</p>
+<p>The result is a set of residuals, vacuum cleaned of systemic effects.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># convert the output of vacuum_cleaner into a long data frame</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>dat &lt;-<span class="st"> </span><span class="kw">vacuum_cleaner</span>(table_<span class="dv">8</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="st">&#39;row&#39;</span> =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">row_number</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> dplyr<span class="op">::</span><span class="kw">starts_with</span>(<span class="st">&#39;V&#39;</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>               <span class="dt">names_to =</span> <span class="st">&#39;col&#39;</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>               <span class="dt">values_to =</span> <span class="st">&#39;value&#39;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co"># since the table_8 was a two-way table, the rows are factors</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>dat<span class="op">$</span>row &lt;-<span class="st"> </span><span class="kw">as.factor</span>(dat<span class="op">$</span>row)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="co"># conduct analysis of variance</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>aov_results &lt;-<span class="st"> </span><span class="kw">aov</span>(value <span class="op">~</span><span class="st"> </span>row <span class="op">+</span><span class="st"> </span>col, dat) </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="kw">summary</span>(aov_results)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="co">#&gt;              Df Sum Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="co">#&gt; row          35   0.00 0.00000       0      1</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="co">#&gt; col          14   0.00 0.00000       0      1</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a><span class="co">#&gt; Residuals   490  20.51 0.04185</span></span></code></pre></div>
+</div>
+<div id="data-sets-and-errata" class="section level3">
+<h3>Data sets and errata</h3>
+<p>There are three data sets in this package, which Tukey provided, one for each procedure.</p>
+<ul>
+<li><strong>Table 1</strong> contains example data for FUNOP (p 24)</li>
+<li><strong>Table 2</strong> is a 36 x 15 two-way table and contains example data for FUNOR-FUNOM (p 26)</li>
+<li><strong>Table 8</strong> is a 36 x 15 two-way table and contains example data for the vacuum cleaner (p 54). Note that Tukey’s published table contains a typo, which has been corrected in this package. (See note below)</li>
+</ul>
+<p>“The Future of Data Analysis” contains a handful of errors that can make a detailed investigation of the paper difficult. Below, I’ve documented what I found in case anyone wants to dig more deeply themselves:</p>
+<ul>
+<li>One of Tukey’s Gaussian calculations contains an arithmetic error: <em>a</em><sub>4|14</sub> should be Gau<sup>-1</sup>(11/43) (p 23)</li>
+<li>As mentioned, one of the values in Table 8 has an inverted sign: the value in row 23, column 10 should be 0.100, not -0.100 (p 54)</li>
+<li>The numerator for [y/ab], when based up the row coefficent, should be Σ<em><sub>r</sub></em> <em>a<sub>r</sub></em>[<em>y/<strong>b</strong></em>]<em><sub>r</sub></em> instead of Σ<em><sub>r</sub></em> <em>a<sub>r</sub></em>[<em>y/<strong>a</strong></em>]<em><sub>r</sub></em> (p 52)</li>
+<li>Tukey swaps two values in when he plugs them into a key regression equation: 0.258 and 0.167 (p 55). The equation should read:</li>
+</ul>
+<p><span class="math display">\[
+0.126 - (0.014)(0.167) - (-0.459)(0.258) - (0.921)(0.258)(0.167) \space \doteq \space 0.20
+\]</span></p>
+</div>
+<div id="references" class="section level3">
+<h3>References</h3>
+<p>Tukey, John W. “The Future of Data Analysis.” <em>The Annals of Mathematical</em> Statistics, <em>33</em>(1), 1962, pp 1-67. <em>JSTOR</em>, <a href="https://www.jstor.org/stable/2237638" class="uri">https://www.jstor.org/stable/2237638</a>.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
